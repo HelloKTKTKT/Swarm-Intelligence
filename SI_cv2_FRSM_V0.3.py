@@ -34,7 +34,7 @@ class Robot:
         self.probability = [0, 0, 0]
         self.lineup = 0
         self.comm_range = 45
-        self.walk_step = random.randint(3, 7)
+        self.walk_step = random.randint(2, 5)
 
     def move(self):
         if self.state == INIT:
@@ -235,14 +235,13 @@ def mouse_click_1(event, x, y, flags, param):
         tem_robot.position = [x, y]
         tem_robot.state = INIT
         param.append(tem_robot)
-
-
-def mouse_click_2(event, x, y, flags, param):
-    if event == cv2.EVENT_RBUTTONDOWN:
+    elif event == cv2.EVENT_RBUTTONDOWN:
         while True:
-            if cv2.waitKey(1) == 13:
+            value = cv2.waitKey(1)
+            if value == 32:
                 break
-
+    else:
+        pass
 
 
 def plot_stack(stack_l, stack_m):
@@ -277,13 +276,12 @@ def main():
         cv2.putText(map1, stack_text_1, (100, 200), font, 1, (50, 10, 80), 2)
         cv2.putText(map1, rob_text, (100, 300), font, 1, (50, 10, 80), 2)
         cv2.setMouseCallback('test', mouse_click_1, robot_list)
-        cv2.setMouseCallback('test', mouse_click_2)
         draw_local_network(robot_list, map1)
         stack_list_0.append(stack[0])
         stack_list_1.append(stack[1])
         time -= 1
         for robot in robot_list:
-            cv2.circle(map1, (robot.position[0], robot.position[1]), 8 - robot.walk_step, (0, 0, 0), -1)
+            cv2.circle(map1, (robot.position[0], robot.position[1]), 7 - robot.walk_step, (0, 0, 0), -1)
             cv2.circle(map1, (robot.position[0], robot.position[1]), robot.comm_range, (0, 0, 255), 1)
             if robot.lineup > 0:
                 robot.lineup -= 1
